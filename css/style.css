@@ -594,7 +594,7 @@ body, .aside .aside-item:hover .aside-menu-link,
   font-style: normal; }
 
 /* text-algin */
-.text-align-center, .aside .aside-show, .aside .aside-show-wrapper, .main .toTop, .toc-wrapper::after, .category-list, .category-list-link,
+.text-align-center, .aside .aside-show, .aside .aside-show-wrapper, .main .toTop, .post-copyright, .toc-wrapper::after, .category-list, .category-list-link,
 .category-list-count, .tag-cloud, .links-list, .footer {
   text-align: center; }
 
@@ -682,7 +682,7 @@ body, .main .page-number,
 
 .background-color-eee, .main .page-number,
 .main .extend,
-.main .space, .main .page-number.current:hover, .post-copyright {
+.main .space, .main .page-number.current:hover {
   background-color: #eee; }
 
 .background-color-19f, .main .extend:hover,
@@ -921,6 +921,7 @@ body {
 .main {
   width: 70%;
   box-sizing: border-box;
+  background-image: url("http://ztpx.oss-cn-beijing.aliyuncs.com/blog/paper.gif");
   /* ========= 分页系统 ========= */
   /* ========= 上到最顶 ========= */ }
   .main .paging {
@@ -1034,7 +1035,8 @@ body {
 .post-copyright {
   padding: 1em;
   margin-top: 2em;
-  font-size: .9em; }
+  font-size: .7em;
+  font-weight: bold; }
 
 .post-excerpt,
 .post-content {
