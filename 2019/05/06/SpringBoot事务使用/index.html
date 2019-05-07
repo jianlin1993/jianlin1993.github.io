@@ -100,36 +100,38 @@
       
       <a href="/tags/springboot事务回滚/" " title="springboot事务回滚" class="post-tags"><i class="post-tags-icon iconfont icon-biaoqian"></i>springboot事务回滚</a>
       
-      <a href="/tags/手动回滚/" " title="手动回滚" class="post-tags"><i class="post-tags-icon iconfont icon-biaoqian"></i>手动回滚</a>
-      
-      <a href="/tags/事务使用/" " title="事务使用" class="post-tags"><i class="post-tags-icon iconfont icon-biaoqian"></i>事务使用</a>
-      
-      <a href="/tags/回滚/" " title="回滚" class="post-tags"><i class="post-tags-icon iconfont icon-biaoqian"></i>回滚</a>
-      
       <a href="/tags/Transactional/" " title="Transactional" class="post-tags"><i class="post-tags-icon iconfont icon-biaoqian"></i>Transactional</a>
       
     </p>
     
   </header>
-  <div class="post-content"><h3 id="Springboot中使用事务的方式："><a href="#Springboot中使用事务的方式：" class="headerlink" title="Springboot中使用事务的方式："></a>Springboot中使用事务的方式：</h3><ol>
-<li><p>启动类加上<code>@EnableTransactionManagement</code>注解，开启事务支持（其实默认是开启的）。</p>
+  <div class="post-content"><h2 id="springboot中使用事务的方式："><a class="header-anchor" href="#springboot中使用事务的方式：">¶</a>Springboot中使用事务的方式：</h2>
+<ol>
+<li>
+<p>启动类加上<code>@EnableTransactionManagement</code>注解，开启事务支持（其实默认是开启的）。</p>
 </li>
-<li><p>在使用事务的<code>public</code>（只有public支持事务）方法（或者类-相当于该类的所有public方法都使用）加上<code>@Transactional</code>注解。</p>
+<li>
+<p>在使用事务的<code>public</code>（只有public支持事务）方法（或者类-相当于该类的所有public方法都使用）加上<code>@Transactional</code>注解。</p>
 </li>
-<li><p>在实际使用中一般是在service(业务层)中使用<code>@Transactional</code>，那么对于controller-&gt;service流程中：<br> 如果controller未开启事务，service中开始了事务，service成功执行，controller在之后的运行中出现异常（错误），不会自动回滚。<br> 也就是说，只有在开启事务的方法中出现异常（默认只有非检测性异常才生效-RuntimeException ）（错误-Error）才会自动回滚。<br> 如果想要对抛出的任何异常都进行自动回滚（而不是只针对RuntimeException），只需要在使用<code>@Transactional(rollbackFor = Exception.class)</code>即可。</p>
+<li>
+<p>在实际使用中一般是在service(业务层)中使用<code>@Transactional</code>，那么对于controller-&gt;service流程中：</p>
+<ul>
+<li>如果controller未开启事务，service中开始了事务，service成功执行，controller在之后的运行中出现异常（错误），不会自动回滚。</li>
+<li>也就是说，只有在开启事务的方法中出现异常（默认只有非检测性异常才生效-RuntimeException ）（错误-Error）才会自动回滚。</li>
+<li>如果想要对抛出的任何异常都进行自动回滚（而不是只针对RuntimeException），只需要在使用<code>@Transactional(rollbackFor = Exception.class)</code>即可。</li>
+</ul>
 </li>
 </ol>
-<h3 id="开启事务的方法中事务回滚的情况："><a href="#开启事务的方法中事务回滚的情况：" class="headerlink" title="开启事务的方法中事务回滚的情况："></a>开启事务的方法中事务回滚的情况：</h3><ul>
-<li><p>未发现的异常，程序运行过程中自动抛出RuntimeException或者其子类，程序终止，自动回滚。</p>
-</li>
-<li><p>使用<code>TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();</code>进行手动回滚。</p>
-</li>
-<li><p>注意：如果在try-catch语句中对可能出现的异常（RuntimeException）进行了处理，没有再手动throw异常，spring认为该方法成功执行，</p>
-</li>
-<li>不会进行回滚，此时需要进行手动回滚，另外，如果try-catch语句在finally中进行了return操作，那么catch中手动抛出的异常也会被覆盖，同样不会自动回滚。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不会自动回滚</span></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line">&#125;<span class="keyword">catch</span>(RuntimeException e)&#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">&#125;</span><br><span class="line">		</span><br><span class="line"><span class="comment">//会自动回滚</span></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line">&#125;<span class="keyword">catch</span>(RuntimeException e)&#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<h2 id="开启事务的方法中事务回滚的情况："><a class="header-anchor" href="#开启事务的方法中事务回滚的情况：">¶</a>开启事务的方法中事务回滚的情况：</h2>
+<ul>
+<li>未发现的异常，程序运行过程中自动抛出RuntimeException或者其子类，程序终止，自动回滚。</li>
+<li>使用<code>TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();</code>进行手动回滚。</li>
+<li>注意：如果在try-catch语句中对可能出现的异常（RuntimeException）进行了处理，没有再手动throw异常，spring认为该方法成功执行，</li>
+<li>不会进行回滚，此时需要进行手动回滚，另外，如果try-catch语句在finally中进行了return操作，那么catch中手动抛出的异常也会被覆盖，同样不会自动回滚。</li>
 </ul>
-<h3 id="实际开发中一般是："><a href="#实际开发中一般是：" class="headerlink" title="实际开发中一般是："></a>实际开发中一般是：</h3><p>在controller层进行异常处理try-catch（因为controller的返回信息直接面向应用的使用人员  应该返回他们能读懂的信息），service层和dao层不进行异常处理，直接都向上抛出到controller中进行统一处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不会自动回滚</span></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line">&#125;<span class="keyword">catch</span>(RuntimeException e)&#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//会自动回滚</span></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line">&#125;<span class="keyword">catch</span>(RuntimeException e)&#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line">&#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="实际开发中一般是："><a class="header-anchor" href="#实际开发中一般是：">¶</a>实际开发中一般是：</h2>
+<p>在controller层进行异常处理try-catch（因为controller的返回信息直接面向应用的使用人员,应该返回他们能读懂的信息),service层和dao层不进行异常处理，直接都向上抛出到controller中进行统一处理。</p>
 </div>
     
       
@@ -160,7 +162,7 @@
       <div class="toc-wrapper">
         <div class="toc-scroll">
           <div class="toc-middle">
-            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Springboot中使用事务的方式："><span class="toc-text">Springboot中使用事务的方式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#开启事务的方法中事务回滚的情况："><span class="toc-text">开启事务的方法中事务回滚的情况：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#实际开发中一般是："><span class="toc-text">实际开发中一般是：</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#springboot中使用事务的方式："><span class="toc-text">¶Springboot中使用事务的方式：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开启事务的方法中事务回滚的情况："><span class="toc-text">¶开启事务的方法中事务回滚的情况：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实际开发中一般是："><span class="toc-text">¶实际开发中一般是：</span></a></li></ol>
           </div>
         </div>
       </div>
