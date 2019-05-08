@@ -1182,13 +1182,13 @@ body {
       color: #ff4500; }
     .post-excerpt .highlight .string,
     .post-content .highlight .string {
-      color: #8fb774; }
+      color: #42ebb2; }
     .post-excerpt .highlight .literal,
     .post-content .highlight .literal {
       color: #d19a66; }
     .post-excerpt .highlight .meta,
     .post-content .highlight .meta {
-      color: #8fb774; }
+      color: #dee458; }
     .post-excerpt .highlight .built_in,
     .post-content .highlight .built_in {
       color: #53b0bd; }
@@ -1200,13 +1200,22 @@ body {
       color: #5c6370; }
     .post-excerpt .highlight .number,
     .post-content .highlight .number {
-      color: #8fb774; }
+      color: #7c7cbb; }
     .post-excerpt .highlight .bullet,
     .post-content .highlight .bullet {
       color: #8fb774; }
     .post-excerpt .highlight .variable,
     .post-content .highlight .variable {
       color: #e06c75; }
+    .post-excerpt .highlight .title,
+    .post-content .highlight .title {
+      color: #f1a04b; }
+    .post-excerpt .highlight .class,
+    .post-content .highlight .class {
+      color: #ce4599; }
+    .post-excerpt .highlight .params,
+    .post-content .highlight .params {
+      color: #8fb774; }
     .post-excerpt .highlight.plain table::before,
     .post-content .highlight.plain table::before {
       content: "CODE"; }
@@ -1234,6 +1243,12 @@ body {
     .post-excerpt .highlight.markdown table::before,
     .post-content .highlight.markdown table::before {
       content: "MarkDown"; }
+    .post-excerpt .highlight.java table::before,
+    .post-content .highlight.java table::before {
+      content: "Java"; }
+    .post-excerpt .highlight.xml table::before,
+    .post-content .highlight.xml table::before {
+      content: "XML"; }
   .post-excerpt .highlight table,
   .post-content .highlight table {
     margin: 0; }
