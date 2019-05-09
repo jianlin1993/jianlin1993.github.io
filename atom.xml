@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jianlin1993.github.io/"/>
-  <updated>2019-05-09T09:58:04.402Z</updated>
+  <updated>2019-05-09T10:19:15.107Z</updated>
   <id>https://jianlin1993.github.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>力扣-数据库-180-连续出现的数字</title>
+    <link href="https://jianlin1993.github.io/2019/05/09/%E5%8A%9B%E6%89%A3-%E6%95%B0%E6%8D%AE%E5%BA%93-180-%E8%BF%9E%E7%BB%AD%E5%87%BA%E7%8E%B0%E7%9A%84%E6%95%B0%E5%AD%97/"/>
+    <id>https://jianlin1993.github.io/2019/05/09/力扣-数据库-180-连续出现的数字/</id>
+    <published>2019-05-09T10:12:18.000Z</published>
+    <updated>2019-05-09T10:19:15.107Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>编写一个 SQL 查询，查找所有至少连续出现三次的数字。<br>±—±----+<br>| Id | Num |<br>±—±----+<br>| 1  |  1  |<br>| 2  |  1  |<br>| 3  |  1  |<br>| 4  |  2  |<br>| 5  |  1  |<br>| 6  |  2  |<br>| 7  |  2  |<br>±—±----+<br>例如，给定上面的 Logs 表， 1 是唯一连续出现至少三次的数字。<br>±----------------+<br>| ConsecutiveNums |<br>±----------------+<br>| 1               |<br>±----------------+</p></blockquote><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="keyword">num</span> ConsecutiveNums  <span class="keyword">from</span></span><br><span class="line">(<span class="keyword">select</span> lag(<span class="keyword">num</span>,<span class="number">1</span>,<span class="literal">null</span>)<span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span>) last_num,<span class="keyword">num</span>,<span class="keyword">lead</span>(<span class="keyword">num</span>,<span class="number">1</span>,<span class="literal">null</span>)<span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span>) next_num </span><br><span class="line"><span class="keyword">from</span> <span class="keyword">Logs</span> ) A </span><br><span class="line"><span class="keyword">where</span> A.last_num=A.num <span class="keyword">and</span>  A.next_num=A.num</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;编写一个 SQL 查询，查找所有至少连续出现三次的数字。&lt;br&gt;
+±—±----+&lt;br&gt;
+| Id | Num |&lt;br&gt;
+±—±----+&lt;br&gt;
+| 1  |  1  |&lt;br&gt;
+| 2  |  1  |&lt;br&gt;
+| 3  |  1  |&lt;b
+      
+    
+    </summary>
+    
+      <category term="LeetCode-DataBase" scheme="https://jianlin1993.github.io/categories/LeetCode-DataBase/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>力扣-数据库-178-分数排名</title>
