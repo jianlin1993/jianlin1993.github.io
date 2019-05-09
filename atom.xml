@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://jianlin1993.github.io/"/>
-  <updated>2019-05-09T09:50:30.616Z</updated>
+  <updated>2019-05-09T09:58:04.402Z</updated>
   <id>https://jianlin1993.github.io/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>力扣-数据库-178-分数排名</title>
+    <link href="https://jianlin1993.github.io/2019/05/09/%E5%8A%9B%E6%89%A3-%E6%95%B0%E6%8D%AE%E5%BA%93-178-%E5%88%86%E6%95%B0%E6%8E%92%E5%90%8D/"/>
+    <id>https://jianlin1993.github.io/2019/05/09/力扣-数据库-178-分数排名/</id>
+    <published>2019-05-09T09:56:26.000Z</published>
+    <updated>2019-05-09T09:58:04.402Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>编写一个 SQL 查询来实现分数排名。如果两个分数相同，则两个分数排名（Rank）相同。请注意，平分后的下一个名次应该是下一个连续的整数值。换句话说，名次之间不应该有“间隔”。<br>±—±------+<br>| Id | Score |<br>±—±------+<br>| 1  | 3.50  |<br>| 2  | 3.65  |<br>| 3  | 4.00  |<br>| 4  | 3.85  |<br>| 5  | 4.00  |<br>| 6  | 3.65  |<br>±—±------+<br>例如，根据上述给定的 Scores 表，你的查询应该返回（按分数从高到低排列）：<br>±------±-----+<br>| Score | Rank |<br>±------±-----+<br>| 4.00  | 1    |<br>| 4.00  | 1    |<br>| 3.85  | 2    |<br>| 3.65  | 3    |<br>| 3.65  | 3    |<br>| 3.50  | 4    |<br>±------±-----+</p></blockquote><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> Score,<span class="keyword">dense_rank</span>() <span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> Score <span class="keyword">desc</span>) <span class="keyword">rank</span> <span class="keyword">from</span> Scores;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;编写一个 SQL 查询来实现分数排名。如果两个分数相同，则两个分数排名（Rank）相同。请注意，平分后的下一个名次应该是下一个连续的整数值。换句话说，名次之间不应该有“间隔”。&lt;br&gt;
+±—±------+&lt;br&gt;
+| Id | Score |&lt;b
+      
+    
+    </summary>
+    
+      <category term="LeetCode-DataBase" scheme="https://jianlin1993.github.io/categories/LeetCode-DataBase/"/>
+    
+    
+  </entry>
+  
+  <entry>
     <title>力扣-数据库-177-第N高薪水</title>
     <link href="https://jianlin1993.github.io/2019/05/09/%E5%8A%9B%E6%89%A3-%E6%95%B0%E6%8D%AE%E5%BA%93-177-%E7%AC%ACN%E9%AB%98%E8%96%AA%E6%B0%B4/"/>
     <id>https://jianlin1993.github.io/2019/05/09/力扣-数据库-177-第N高薪水/</id>
     <published>2019-05-09T09:40:34.000Z</published>
-    <updated>2019-05-09T09:50:30.616Z</updated>
+    <updated>2019-05-09T09:57:05.303Z</updated>
     
     <content type="html"><![CDATA[<blockquote><p>编写一个 SQL 查询，获取 Employee 表中第 n 高的薪水（Salary）。</p><p>±—±-------+<br>| Id | Salary |<br>±—±-------+<br>| 1  | 100    |<br>| 2  | 200    |<br>| 3  | 300    |<br>±—±-------+<br>例如上述 Employee 表，n = 2 时，应返回第二高的薪水 200。如果不存在第 n 高的薪水，那么查询应返回 null。</p><p>±-----------------------+<br>| getNthHighestSalary(2) |<br>±-----------------------+<br>| 200                    |<br>±-----------------------+</p></blockquote><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--①</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> getNthHighestSalary(N <span class="keyword">IN</span> <span class="built_in">NUMBER</span>) <span class="keyword">RETURN</span> <span class="built_in">NUMBER</span> <span class="keyword">IS</span></span><br><span class="line"><span class="keyword">result</span> <span class="built_in">NUMBER</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="comment">/* Write your PL/SQL query statement below */</span></span><br><span class="line">    <span class="keyword">select</span>(</span><br><span class="line"><span class="keyword">SELECT</span> SecondHighestSalary <span class="keyword">FROM</span> ( <span class="keyword">select</span> Salary SecondHighestSalary,<span class="keyword">ROWNUM</span> <span class="keyword">num</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">distinct</span> Salary <span class="keyword">from</span> Employee <span class="keyword">order</span> <span class="keyword">by</span> Salary <span class="keyword">desc</span>)) <span class="keyword">WHERE</span> <span class="keyword">num</span>=N) SecondHighestSalary <span class="keyword">into</span> <span class="keyword">result</span> <span class="keyword">from</span> dual;</span><br><span class="line"></span><br><span class="line">    RETURN result;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="comment">--② 使用分析函数</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> getNthHighestSalary(N <span class="keyword">IN</span> <span class="built_in">NUMBER</span>) <span class="keyword">RETURN</span> <span class="built_in">NUMBER</span> <span class="keyword">IS</span></span><br><span class="line"><span class="keyword">result</span> <span class="built_in">NUMBER</span>;</span><br><span class="line"><span class="keyword">BEGIN</span> </span><br><span class="line">    <span class="keyword">select</span> <span class="keyword">max</span>(salary) <span class="keyword">into</span> <span class="keyword">result</span> <span class="keyword">from</span>(</span><br><span class="line">    <span class="keyword">select</span> salary,<span class="keyword">dense_rank</span>() <span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> salary <span class="keyword">desc</span>) <span class="keyword">as</span> rn <span class="keyword">from</span> employee)</span><br><span class="line">    <span class="keyword">where</span> rn = n;</span><br><span class="line">    RETURN result;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>]]></content>
     
@@ -39,6 +65,8 @@
       
     
     </summary>
+    
+      <category term="LeetCode-DataBase" scheme="https://jianlin1993.github.io/categories/LeetCode-DataBase/"/>
     
     
   </entry>
