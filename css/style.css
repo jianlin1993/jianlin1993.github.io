@@ -1249,6 +1249,9 @@ body {
     .post-excerpt .highlight.xml table::before,
     .post-content .highlight.xml table::before {
       content: "XML"; }
+    .post-excerpt .highlight.sql table::before,
+    .post-content .highlight.sql table::before {
+      content: "SQL"; }
   .post-excerpt .highlight table,
   .post-content .highlight table {
     margin: 0; }
