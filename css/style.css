@@ -1137,7 +1137,7 @@ body {
       padding: .3em 0; }
     .post-excerpt .highlight .line,
     .post-content .highlight .line {
-      font-size: .8em;
+      font-size: 1.3em;
       line-height: 1.4; }
     .post-excerpt .highlight .line::after,
     .post-content .highlight .line::after {
@@ -1197,7 +1197,8 @@ body {
       color: #c678dd; }
     .post-excerpt .highlight .comment,
     .post-content .highlight .comment {
-      color: #5c6370; }
+      color: #f48676;
+      font-size: .7em; }
     .post-excerpt .highlight .number,
     .post-content .highlight .number {
       color: #7c7cbb; }

@@ -14,11 +14,11 @@
   <meta name="author" content="葬瞳飘血">
 
   
-  <title>力扣-数据库-180-连续出现的数字</title>
+  <title>力扣-数据库-595-大的国家</title>
   
 
   <link rel="alternate" href="/atom.xml" title="葬瞳飘血的博客" type="application/atom+xml">
-  <link rel="canonical" href="https://jianlin1993.github.io/2019/05/09/力扣-数据库-180-连续出现的数字/index.html">
+  <link rel="canonical" href="https://jianlin1993.github.io/2019/05/10/力扣-数据库-595-大的国家/index.html">
   <link rel="shortcut icon" href="/">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="//at.alicdn.com/t/font_1182825_z1mzlkknn1.css">
@@ -85,9 +85,9 @@
   
   <header class="post-header">
     
-    <h1 class="post-title">力扣-数据库-180-连续出现的数字</h1>
+    <h1 class="post-title">力扣-数据库-595-大的国家</h1>
     <p class="post-meta">
-      <span class="post-time">2019-05-09</span>
+      <span class="post-time">2019-05-10</span>
       
       <a href="/categories/LeetCode-DataBase/" title="LeetCode-DataBase" class="post-categories">LeetCode-DataBase</a>
       
@@ -96,77 +96,102 @@
     
   </header>
   <div class="post-content"><blockquote>
-<p>编写一个 SQL 查询，查找所有至少连续出现三次的数字。<br>
-|----|-----|</p>
+<p>这里有张 World 表<br>
+|-----------------|------------|------------|--------------|---------------|</p>
 <table>
 <thead>
 <tr>
-<th>Id</th>
-<th>Num</th>
+<th>name</th>
+<th>continent</th>
+<th>area</th>
+<th>population</th>
+<th>gdp</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>1</td>
-<td>1</td>
+<td>Afghanistan</td>
+<td>Asia</td>
+<td>652230</td>
+<td>25500100</td>
+<td>20343000</td>
 </tr>
 <tr>
-<td>2</td>
-<td>1</td>
+<td>Albania</td>
+<td>Europe</td>
+<td>28748</td>
+<td>2831741</td>
+<td>12960000</td>
 </tr>
 <tr>
-<td>3</td>
-<td>1</td>
+<td>Algeria</td>
+<td>Africa</td>
+<td>2381741</td>
+<td>37100000</td>
+<td>188681000</td>
 </tr>
 <tr>
-<td>4</td>
-<td>2</td>
+<td>Andorra</td>
+<td>Europe</td>
+<td>468</td>
+<td>78115</td>
+<td>3712000</td>
 </tr>
 <tr>
-<td>5</td>
-<td>1</td>
-</tr>
-<tr>
-<td>6</td>
-<td>2</td>
-</tr>
-<tr>
-<td>7</td>
-<td>2</td>
-</tr>
-<tr>
-<td>----</td>
-<td>-----</td>
-</tr>
-</tbody>
-</table>
-<p>例如，给定上面的 Logs 表， 1 是唯一连续出现至少三次的数字。<br>
-|-----------------|</p>
-<table>
-<thead>
-<tr>
-<th>ConsecutiveNums</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
+<td>Angola</td>
+<td>Africa</td>
+<td>1246700</td>
+<td>20609294</td>
+<td>100990000</td>
 </tr>
 <tr>
 <td>-----------------</td>
+<td>------------</td>
+<td>------------</td>
+<td>--------------</td>
+<td>---------------</td>
+</tr>
+</tbody>
+</table>
+<p>如果一个国家的面积超过300万平方公里，或者人口超过2500万，那么这个国家就是大国家。</p>
+<p>编写一个SQL查询，输出表中所有大国家的名称、人口和面积。<br>
+例如，根据上表，我们应该输出:<br>
+|--------------|-------------|--------------|</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>population</th>
+<th>area</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Afghanistan</td>
+<td>25500100</td>
+<td>652230</td>
+</tr>
+<tr>
+<td>Algeria</td>
+<td>37100000</td>
+<td>2381741</td>
+</tr>
+<tr>
+<td>--------------</td>
+<td>-------------</td>
+<td>--------------</td>
 </tr>
 </tbody>
 </table>
 </blockquote>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="keyword">num</span> ConsecutiveNums  <span class="keyword">from</span></span><br><span class="line">(<span class="keyword">select</span> lag(<span class="keyword">num</span>,<span class="number">1</span>,<span class="literal">null</span>)<span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span>) last_num,<span class="keyword">num</span>,<span class="keyword">lead</span>(<span class="keyword">num</span>,<span class="number">1</span>,<span class="literal">null</span>)<span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span>) next_num </span><br><span class="line"><span class="keyword">from</span> <span class="keyword">Logs</span> ) A </span><br><span class="line"><span class="keyword">where</span> A.last_num=A.num <span class="keyword">and</span>  A.next_num=A.num</span><br></pre></td></tr></table></figure>
-</div>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--方法一：使用or</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,population,area <span class="keyword">from</span> World </span><br><span class="line"><span class="keyword">where</span>  area &gt;<span class="number">3000000</span> <span class="keyword">or</span> population &gt;<span class="number">25000000</span></span><br><span class="line"><span class="comment">--方法二：使用union代替or  效率更高</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,population,area <span class="keyword">from</span> World </span><br><span class="line"><span class="keyword">where</span>  area &gt;<span class="number">3000000</span>  </span><br><span class="line"><span class="keyword">union</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,population,area <span class="keyword">from</span> World </span><br><span class="line"><span class="keyword">where</span>  population &gt;<span class="number">25000000</span></span><br></pre></td></tr></table></figure></div>
     
       
 	<p class="post-copyright">本文系原创文章，转载请注明来自<a class="post-copyright-link" href="/" title="葬瞳飘血的个人博客" target="_blank">葬瞳飘血的个人博客</a><br><span class="post-copyright">@copyright 葬瞳飘血</span></p>
 	
 
 
-<!--，或链接上原文地址：<a class="post-copyright-link" href="https://jianlin1993.github.io/2019/05/09/力扣-数据库-180-连续出现的数字/" title="https://jianlin1993.github.io/2019/05/09/力扣-数据库-180-连续出现的数字/" target="_blank">https://jianlin1993.github.io/2019/05/09/力扣-数据库-180-连续出现的数字/</a> -->
+<!--，或链接上原文地址：<a class="post-copyright-link" href="https://jianlin1993.github.io/2019/05/10/力扣-数据库-595-大的国家/" title="https://jianlin1993.github.io/2019/05/10/力扣-数据库-595-大的国家/" target="_blank">https://jianlin1993.github.io/2019/05/10/力扣-数据库-595-大的国家/</a> -->
 <!-- 来必力City版安装代码 -->
 <div id="lv-container" data-id="city" data-uid="MTAyMC80NDA4OS8yMDYyNA==">
 	<script type="text/javascript">

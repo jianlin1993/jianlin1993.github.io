@@ -14,11 +14,11 @@
   <meta name="author" content="葬瞳飘血">
 
   
-  <title>力扣-数据库-180-连续出现的数字</title>
+  <title>力扣-数据库-627-交换工资</title>
   
 
   <link rel="alternate" href="/atom.xml" title="葬瞳飘血的博客" type="application/atom+xml">
-  <link rel="canonical" href="https://jianlin1993.github.io/2019/05/09/力扣-数据库-180-连续出现的数字/index.html">
+  <link rel="canonical" href="https://jianlin1993.github.io/2019/05/10/力扣-数据库-627-交换工资/index.html">
   <link rel="shortcut icon" href="/">
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="//at.alicdn.com/t/font_1182825_z1mzlkknn1.css">
@@ -85,9 +85,9 @@
   
   <header class="post-header">
     
-    <h1 class="post-title">力扣-数据库-180-连续出现的数字</h1>
+    <h1 class="post-title">力扣-数据库-627-交换工资</h1>
     <p class="post-meta">
-      <span class="post-time">2019-05-09</span>
+      <span class="post-time">2019-05-10</span>
       
       <a href="/categories/LeetCode-DataBase/" title="LeetCode-DataBase" class="post-categories">LeetCode-DataBase</a>
       
@@ -96,77 +96,91 @@
     
   </header>
   <div class="post-content"><blockquote>
-<p>编写一个 SQL 查询，查找所有至少连续出现三次的数字。<br>
-|----|-----|</p>
+<p>给定一个 salary 表，如下所示，有 m = 男性 和 f = 女性 的值。交换所有的 f 和 m 值（例如，将所有 f 值更改为 m，反之亦然）。要求只使用一个更新（Update）语句，并且没有中间的临时表。<br>
+注意，您必只能写一个 Update 语句，请不要编写任何 Select 语句。<br>
+例如：</p>
 <table>
 <thead>
 <tr>
-<th>Id</th>
-<th>Num</th>
+<th>id</th>
+<th>name</th>
+<th>sex</th>
+<th>salary</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>1</td>
-<td>1</td>
+<td>A</td>
+<td>m</td>
+<td>2500</td>
 </tr>
 <tr>
 <td>2</td>
-<td>1</td>
+<td>B</td>
+<td>f</td>
+<td>1500</td>
 </tr>
 <tr>
 <td>3</td>
-<td>1</td>
+<td>C</td>
+<td>m</td>
+<td>5500</td>
 </tr>
 <tr>
 <td>4</td>
-<td>2</td>
-</tr>
-<tr>
-<td>5</td>
-<td>1</td>
-</tr>
-<tr>
-<td>6</td>
-<td>2</td>
-</tr>
-<tr>
-<td>7</td>
-<td>2</td>
-</tr>
-<tr>
-<td>----</td>
-<td>-----</td>
+<td>D</td>
+<td>f</td>
+<td>500</td>
 </tr>
 </tbody>
 </table>
-<p>例如，给定上面的 Logs 表， 1 是唯一连续出现至少三次的数字。<br>
-|-----------------|</p>
+<p>运行你所编写的更新语句之后，将会得到以下表:</p>
 <table>
 <thead>
 <tr>
-<th>ConsecutiveNums</th>
+<th>id</th>
+<th>name</th>
+<th>sex</th>
+<th>salary</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>1</td>
+<td>A</td>
+<td>f</td>
+<td>2500</td>
 </tr>
 <tr>
-<td>-----------------</td>
+<td>2</td>
+<td>B</td>
+<td>m</td>
+<td>1500</td>
+</tr>
+<tr>
+<td>3</td>
+<td>C</td>
+<td>f</td>
+<td>5500</td>
+</tr>
+<tr>
+<td>4</td>
+<td>D</td>
+<td>m</td>
+<td>500</td>
 </tr>
 </tbody>
 </table>
 </blockquote>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> <span class="keyword">num</span> ConsecutiveNums  <span class="keyword">from</span></span><br><span class="line">(<span class="keyword">select</span> lag(<span class="keyword">num</span>,<span class="number">1</span>,<span class="literal">null</span>)<span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span>) last_num,<span class="keyword">num</span>,<span class="keyword">lead</span>(<span class="keyword">num</span>,<span class="number">1</span>,<span class="literal">null</span>)<span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span>) next_num </span><br><span class="line"><span class="keyword">from</span> <span class="keyword">Logs</span> ) A </span><br><span class="line"><span class="keyword">where</span> A.last_num=A.num <span class="keyword">and</span>  A.next_num=A.num</span><br></pre></td></tr></table></figure>
-</div>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--方法一：使用decode</span></span><br><span class="line"><span class="keyword">update</span> salary  <span class="keyword">set</span> sex=<span class="keyword">decode</span>(sex,<span class="string">'f'</span>,<span class="string">'m'</span>,<span class="string">'f'</span>);</span><br><span class="line"><span class="comment">--方法二：使用case when</span></span><br><span class="line"><span class="keyword">update</span> salary  <span class="keyword">set</span> sex=<span class="keyword">case</span> sex <span class="keyword">when</span> <span class="string">'m'</span> <span class="keyword">then</span> <span class="string">'f'</span> <span class="keyword">else</span> <span class="string">'m'</span> <span class="keyword">end</span>;</span><br></pre></td></tr></table></figure></div>
     
       
 	<p class="post-copyright">本文系原创文章，转载请注明来自<a class="post-copyright-link" href="/" title="葬瞳飘血的个人博客" target="_blank">葬瞳飘血的个人博客</a><br><span class="post-copyright">@copyright 葬瞳飘血</span></p>
 	
 
 
-<!--，或链接上原文地址：<a class="post-copyright-link" href="https://jianlin1993.github.io/2019/05/09/力扣-数据库-180-连续出现的数字/" title="https://jianlin1993.github.io/2019/05/09/力扣-数据库-180-连续出现的数字/" target="_blank">https://jianlin1993.github.io/2019/05/09/力扣-数据库-180-连续出现的数字/</a> -->
+<!--，或链接上原文地址：<a class="post-copyright-link" href="https://jianlin1993.github.io/2019/05/10/力扣-数据库-627-交换工资/" title="https://jianlin1993.github.io/2019/05/10/力扣-数据库-627-交换工资/" target="_blank">https://jianlin1993.github.io/2019/05/10/力扣-数据库-627-交换工资/</a> -->
 <!-- 来必力City版安装代码 -->
 <div id="lv-container" data-id="city" data-uid="MTAyMC80NDA4OS8yMDYyNA==">
 	<script type="text/javascript">

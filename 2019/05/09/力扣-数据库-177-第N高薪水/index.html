@@ -97,19 +97,50 @@
   </header>
   <div class="post-content"><blockquote>
 <p>编写一个 SQL 查询，获取 Employee 表中第 n 高的薪水（Salary）。</p>
-<p>±—±-------+<br>
-| Id | Salary |<br>
-±—±-------+<br>
-| 1  | 100    |<br>
-| 2  | 200    |<br>
-| 3  | 300    |<br>
-±—±-------+<br>
-例如上述 Employee 表，n = 2 时，应返回第二高的薪水 200。如果不存在第 n 高的薪水，那么查询应返回 null。</p>
-<p>±-----------------------+<br>
-| getNthHighestSalary(2) |<br>
-±-----------------------+<br>
-| 200                    |<br>
-±-----------------------+</p>
+<p>|----|--------|</p>
+<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>Salary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>100</td>
+</tr>
+<tr>
+<td>2</td>
+<td>200</td>
+</tr>
+<tr>
+<td>3</td>
+<td>300</td>
+</tr>
+<tr>
+<td>----</td>
+<td>--------</td>
+</tr>
+</tbody>
+</table>
+<p>例如上述 Employee 表，n = 2 时，应返回第二高的薪水 200。如果不存在第 n 高的薪水，那么查询应返回 null。</p>
+<p>|------------------------|</p>
+<table>
+<thead>
+<tr>
+<th>getNthHighestSalary(2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+</tr>
+<tr>
+<td>------------------------</td>
+</tr>
+</tbody>
+</table>
 </blockquote>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--①</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> getNthHighestSalary(N <span class="keyword">IN</span> <span class="built_in">NUMBER</span>) <span class="keyword">RETURN</span> <span class="built_in">NUMBER</span> <span class="keyword">IS</span></span><br><span class="line"><span class="keyword">result</span> <span class="built_in">NUMBER</span>;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="comment">/* Write your PL/SQL query statement below */</span></span><br><span class="line">    <span class="keyword">select</span>(</span><br><span class="line"><span class="keyword">SELECT</span> SecondHighestSalary <span class="keyword">FROM</span> ( <span class="keyword">select</span> Salary SecondHighestSalary,<span class="keyword">ROWNUM</span> <span class="keyword">num</span> <span class="keyword">from</span>(<span class="keyword">select</span> <span class="keyword">distinct</span> Salary <span class="keyword">from</span> Employee <span class="keyword">order</span> <span class="keyword">by</span> Salary <span class="keyword">desc</span>)) <span class="keyword">WHERE</span> <span class="keyword">num</span>=N) SecondHighestSalary <span class="keyword">into</span> <span class="keyword">result</span> <span class="keyword">from</span> dual;</span><br><span class="line"></span><br><span class="line">    RETURN result;</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line"><span class="comment">--② 使用分析函数</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> getNthHighestSalary(N <span class="keyword">IN</span> <span class="built_in">NUMBER</span>) <span class="keyword">RETURN</span> <span class="built_in">NUMBER</span> <span class="keyword">IS</span></span><br><span class="line"><span class="keyword">result</span> <span class="built_in">NUMBER</span>;</span><br><span class="line"><span class="keyword">BEGIN</span> </span><br><span class="line">    <span class="keyword">select</span> <span class="keyword">max</span>(salary) <span class="keyword">into</span> <span class="keyword">result</span> <span class="keyword">from</span>(</span><br><span class="line">    <span class="keyword">select</span> salary,<span class="keyword">dense_rank</span>() <span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> salary <span class="keyword">desc</span>) <span class="keyword">as</span> rn <span class="keyword">from</span> employee)</span><br><span class="line">    <span class="keyword">where</span> rn = n;</span><br><span class="line">    RETURN result;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure>
 </div>
